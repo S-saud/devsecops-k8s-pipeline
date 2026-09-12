@@ -1,11 +1,14 @@
+# Stage 1: Build
 FROM node:20-alpine AS builder
-WORKDIR /app
+WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci --only=production
 COPY . .
 
-FROM gcr.io/distroless/nodejs20-debian12
-WORKDIR /app
-COPY --from=builder /app /app
+# Stage 2: Production Distroless
+FROM gcr.io/distroless/nodejs20-debian12:nonroot
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app ./
+USER nonroot
 EXPOSE 3000
-CMD ["index.js"]
+CMD ["server.js"]
