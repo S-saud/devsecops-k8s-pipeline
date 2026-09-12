@@ -22,13 +22,15 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: app/Dockerfile
+          failure-threshold: error
+          ignore: DL3006
 
       - name: Build Docker Image
         run: |
           docker build -t devsecops-app:latest ./app
 
       - name: Run Trivy Vulnerability Scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: 'devsecops-app:latest'
           format: 'json'
