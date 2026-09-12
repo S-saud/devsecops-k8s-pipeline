@@ -1,11 +1,11 @@
-# Stage 1: Build
+# Stage 1: Build stage
 FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --only=production
 COPY . .
 
-# Stage 2: Production Distroless (Line 7 explicitly tagged as latest)
+# Stage 2: Production Distroless (Explicitly tagged)
 FROM gcr.io/distroless/nodejs20-debian12:latest
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app ./
