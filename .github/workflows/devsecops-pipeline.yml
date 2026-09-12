@@ -22,12 +22,8 @@ jobs:
         run: |
           docker run --rm -i hadolint/hadolint hadolint --ignore DL3006 - < app/Dockerfile || true
 
-      - name: Setup Minikube K8s Cluster
-        uses: medyagh/setup-minikube@master
-
-      - name: Build Docker Image directly into Minikube
+      - name: Build Docker Image Locally
         run: |
-          eval $(minikube -p minikube docker-env)
           docker build -t devsecops-app:latest ./app
 
       - name: Run Trivy Vulnerability Scanner
@@ -40,6 +36,13 @@ jobs:
       - name: Execute Python Security Gate
         run: |
           python scripts/security_check.py
+
+      - name: Setup Minikube K8s Cluster
+        uses: medyagh/setup-minikube@master
+
+      - name: Load Image into Minikube
+        run: |
+          minikube image load devsecops-app:latest
 
       - name: Deploy to Kubernetes Cluster & Verify Health
         run: |
