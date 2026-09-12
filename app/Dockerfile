@@ -6,7 +6,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Stage 2: Production Distroless
-FROM gcr.io/distroless/nodejs20-debian12:nonroot
+FROM gcr.io/distroless/nodejs20-debian12:latest
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app ./
 USER nonroot
