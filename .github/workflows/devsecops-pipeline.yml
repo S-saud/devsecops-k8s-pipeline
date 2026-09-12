@@ -47,4 +47,4 @@ jobs:
       - name: Deploy to Kubernetes Cluster & Verify Health
         run: |
           kubectl apply -f k8s/
-          kubectl rollout status deployment/devsecops-app --timeout=90s
+          kubectl rollout status deployment/devsecops-app --timeout=120s
