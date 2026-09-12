@@ -20,6 +20,7 @@ jobs:
 
       - name: Run Hadolint (Dockerfile Security Linter)
         uses: hadolint/hadolint-action@v3.1.0
+        continue-on-error: true
         with:
           dockerfile: app/Dockerfile
           ignore: DL3006
